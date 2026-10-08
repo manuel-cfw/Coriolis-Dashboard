@@ -1,0 +1,17 @@
+{
+  "name": "Coriolis Dashboard",
+  "version": "0.1.0",
+  "manifest_version": 1,
+  "author": "Coriolis – Der Dritte Horizont",
+  "description": "Crew-Dashboard für Coriolis: Charaktere aus der Coriolis-App laden, als Token auf die Karte setzen und synchron halten.",
+  "icon": "/logo.svg",
+  "homepage_url": "/",
+  "background_url": "/background.html",
+  "action": {
+    "title": "Coriolis Dashboard",
+    "icon": "/icon.svg",
+    "popover": "/index.html",
+    "width": 1040,
+    "height": 720
+  }
+}
