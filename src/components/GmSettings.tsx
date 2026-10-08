@@ -109,10 +109,10 @@ export function GmSettings({ obr, settings, crew, sceneTokens, onPlaceAll, onSyn
           <div className="row between">
             <div className="row">
               <button className="btn btn-icon" disabled={!isGroupGm || busy || darkness <= 0} onClick={() => run(async () => {
-                await api.updateDarkness(settings.groupId!, darkness - 1);
+                const next = await api.adjustDarkness(settings.groupId!, -1);
                 crew.reload();
                 broadcastRefresh(obr);
-                return `Dunkelheitspunkte: ${darkness - 1}`;
+                return `Dunkelheitspunkte: ${next}`;
               })}>
                 −
               </button>
@@ -120,10 +120,10 @@ export function GmSettings({ obr, settings, crew, sceneTokens, onPlaceAll, onSyn
                 {darkness}
               </span>
               <button className="btn btn-icon" disabled={!isGroupGm || busy} onClick={() => run(async () => {
-                await api.updateDarkness(settings.groupId!, darkness + 1);
+                const next = await api.adjustDarkness(settings.groupId!, 1);
                 crew.reload();
                 broadcastRefresh(obr);
-                return `Dunkelheitspunkte: ${darkness + 1}`;
+                return `Dunkelheitspunkte: ${next}`;
               })}>
                 +
               </button>

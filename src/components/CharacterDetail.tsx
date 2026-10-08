@@ -49,11 +49,9 @@ export function CharacterDetail({
     }
   };
 
-  const adjust = (key: TrackKey, delta: number, max: number) =>
+  const adjust = (key: TrackKey, delta: number) =>
     run(key, async () => {
-      const next = Math.min(max, Math.max(0, (character[key] ?? 0) + delta));
-      if (next === character[key]) return;
-      await api.updateCharacter(character.id, { [key]: next });
+      await api.adjustCharacter(character.id, key, delta);
       onChanged();
     });
 
@@ -124,7 +122,7 @@ export function CharacterDetail({
               )}
               <span className="stepper">
                 {canEditStats && (
-                  <button className="btn btn-sm btn-icon" disabled={!!busy} onClick={() => adjust(track.key, -1, track.max)} aria-label={`${track.label} verringern`}>
+                  <button className="btn btn-sm btn-icon" disabled={!!busy} onClick={() => adjust(track.key, -1)} aria-label={`${track.label} verringern`}>
                     −
                   </button>
                 )}
@@ -132,7 +130,7 @@ export function CharacterDetail({
                   {track.current}/{track.max}
                 </span>
                 {canEditStats && (
-                  <button className="btn btn-sm btn-icon" disabled={!!busy} onClick={() => adjust(track.key, 1, track.max)} aria-label={`${track.label} erhöhen`}>
+                  <button className="btn btn-sm btn-icon" disabled={!!busy} onClick={() => adjust(track.key, 1)} aria-label={`${track.label} erhöhen`}>
                     +
                   </button>
                 )}

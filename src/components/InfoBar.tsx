@@ -37,7 +37,7 @@ export function InfoBar({ obr, user, settings, crew, hud = false, onOpenDashboar
     setBusy(true);
     setError(null);
     try {
-      await api.updateDarkness(settings.groupId, Math.max(0, darkness + delta));
+      await api.adjustDarkness(settings.groupId, delta);
       crew.reload();
       broadcastRefresh(obr);
     } catch (err) {

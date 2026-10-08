@@ -1,3 +1,4 @@
+import { RADIATION_MAX } from "./labels";
 import type { Character, GroupDetail, GroupListEntry, Ship, User } from "./types";
 
 // Alle Seiten der Erweiterung (Popover, HUD, Hintergrund) laufen auf derselben
@@ -68,7 +69,8 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
 
   let response: Response;
   try {
-    response = await fetch(`/api${path}`, { ...init, headers });
+    // Kein Browser-Cache: Werte müssen immer dem Stand der App entsprechen
+    response = await fetch(`/api${path}`, { cache: "no-store", ...init, headers });
   } catch {
     throw new ApiError(0, "Coriolis-App nicht erreichbar.");
   }
@@ -129,6 +131,30 @@ export const api = {
       method: "PUT",
       body: JSON.stringify(patch),
     });
+  },
+
+  /**
+   * Ändert HP, Willenskraft oder Strahlung um `delta`. Der aktuelle Wert wird
+   * unmittelbar vorher frisch aus der App gelesen, damit eine Änderung, die
+   * dort inzwischen gemacht wurde, nicht mit einem veralteten Wert
+   * überschrieben wird. Gibt den gespeicherten Wert zurück.
+   */
+  async adjustCharacter(characterId: string, key: "hp_current" | "mp_current" | "radiation", delta: number): Promise<number> {
+    const fresh = await api.character(characterId);
+    const max = key === "hp_current" ? fresh.hp_max : key === "mp_current" ? fresh.mp_max : RADIATION_MAX;
+    const current = fresh[key] ?? 0;
+    const next = Math.min(max, Math.max(0, current + delta));
+    if (next !== current) await api.updateCharacter(characterId, { [key]: next });
+    return next;
+  },
+
+  /** Wie adjustCharacter, für die Dunkelheitspunkte der Gruppe. */
+  async adjustDarkness(groupId: string, delta: number): Promise<number> {
+    const fresh = await api.group(groupId);
+    const current = fresh.darknessPoints ?? 0;
+    const next = Math.max(0, current + delta);
+    if (next !== current) await api.updateDarkness(groupId, next);
+    return next;
   },
 };
 
