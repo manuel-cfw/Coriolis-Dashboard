@@ -11,7 +11,7 @@ const maxWidth = Number(new URLSearchParams(window.location.search).get("max")) 
 export function HudTop() {
   const obr = useObr();
   const user = useAuth();
-  const settings = useRoomSettings(obr);
+  const settings = useRoomSettings(obr, user);
   const sceneTokens = useSceneTokens(obr);
   const crew = useCrewData(obr, user, settings, sceneTokens);
   const ref = useRef<HTMLDivElement>(null);

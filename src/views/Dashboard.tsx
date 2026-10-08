@@ -49,7 +49,7 @@ function useWindowWidth() {
 export function Dashboard() {
   const obr = useObr();
   const user = useAuth();
-  const settings = useRoomSettings(obr);
+  const settings = useRoomSettings(obr, user);
   const sceneTokens = useSceneTokens(obr);
   const online = useOnlinePlayers(obr, user);
   usePublishPlayer(obr, user);

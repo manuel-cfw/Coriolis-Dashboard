@@ -14,9 +14,11 @@ import {
   getHudPrefs,
   getRoomSettings,
   parseSettings,
+  updateRoomSettings,
   type RoomSettings,
 } from "../lib/settings";
 import { CREW_WIDTH, MARGIN, TOP_HEIGHT, openCharacterPanel } from "../lib/hud";
+import { getDefaultGroup } from "../lib/defaultGroup";
 import { syncSceneWithApp } from "../lib/sync";
 import { tokenMeta } from "../lib/tokens";
 
@@ -41,7 +43,8 @@ async function updateHud() {
   }
 
   const [width, height] = await Promise.all([OBR.viewport.getWidth(), OBR.viewport.getHeight()]);
-  const showCrew = loggedIn && !!settings?.groupId;
+  const hasGroup = !!settings?.groupId || (loggedIn && !!(await getDefaultGroup()));
+  const showCrew = loggedIn && hasGroup;
   const key = [width, height, prefs.topOffset, prefs.leftOffset, showCrew].join("|");
   if (key === hudKey) return;
   hudKey = key;
@@ -79,6 +82,18 @@ async function updateHud() {
     });
   } else {
     await OBR.popover.close(POPOVER_CREW);
+  }
+}
+
+/**
+ * Hat der Raum noch keine Gruppe und ist der GM in genau einer Coriolis-Gruppe,
+ * wird sie fest im Raum eingetragen – so sehen alle Spieler dieselbe Gruppe.
+ */
+async function ensureRoomGroup() {
+  if (role !== "GM" || !settings || settings.groupId || !getSession()) return;
+  const group = await getDefaultGroup();
+  if (group && settings && !settings.groupId) {
+    await updateRoomSettings({ groupId: group.id, groupName: group.name });
   }
 }
 
@@ -128,6 +143,7 @@ OBR.onReady(async () => {
   [role, sceneReady, settings] = await Promise.all([OBR.player.getRole(), OBR.scene.isReady(), getRoomSettings()]);
 
   await setupContextMenu();
+  await ensureRoomGroup();
   await updateHud();
   scheduleSync();
 
@@ -135,6 +151,7 @@ OBR.onReady(async () => {
     if (!(ROOM_KEY in metadata)) return;
     const previous = settings;
     settings = parseSettings(metadata);
+    void ensureRoomGroup();
     void updateHud();
     if (
       previous?.sync.auto !== settings.sync.auto ||
@@ -155,6 +172,7 @@ OBR.onReady(async () => {
   OBR.player.onChange((player) => {
     if (player.role !== role) {
       role = player.role;
+      void ensureRoomGroup();
       scheduleSync();
     }
   });
@@ -167,7 +185,10 @@ OBR.onReady(async () => {
   window.addEventListener("storage", (event) => {
     if (event.key === HUD_PREFS_STORAGE_KEY || (event.key && AUTH_STORAGE_KEYS.includes(event.key))) {
       void updateHud();
-      if (event.key && AUTH_STORAGE_KEYS.includes(event.key)) scheduleSync();
+      if (event.key && AUTH_STORAGE_KEYS.includes(event.key)) {
+        void ensureRoomGroup();
+        scheduleSync();
+      }
     }
   });
 

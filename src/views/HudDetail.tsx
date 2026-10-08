@@ -9,7 +9,7 @@ const characterId = new URLSearchParams(window.location.search).get("id") ?? "";
 export function HudDetail() {
   const obr = useObr();
   const user = useAuth();
-  const settings = useRoomSettings(obr);
+  const settings = useRoomSettings(obr, user);
   const sceneTokens = useSceneTokens(obr);
   const extraIds = useMemo(() => [characterId], []);
   const crew = useCrewData(obr, user, settings, sceneTokens, extraIds);

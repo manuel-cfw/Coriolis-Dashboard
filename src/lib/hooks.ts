@@ -10,6 +10,7 @@ import {
   setStandaloneMode,
   type RoomSettings,
 } from "./settings";
+import { getDefaultGroup } from "./defaultGroup";
 import { tokenMeta } from "./tokens";
 import type { Character, GroupDetail, Ship, User } from "./types";
 
@@ -106,7 +107,33 @@ export function usePublishPlayer(obr: ObrState, user: User | null) {
 
 // ─── Raum-Einstellungen ──────────────────────────────────────────────────────
 
-export function useRoomSettings(obr: ObrState): RoomSettings | null {
+/**
+ * Raum-Einstellungen. Hat der GM noch keine Gruppe verknüpft und ist der
+ * angemeldete Nutzer in genau einer Gruppe, wird diese automatisch verwendet.
+ */
+export function useRoomSettings(obr: ObrState, user: User | null): RoomSettings | null {
+  const settings = useStoredRoomSettings(obr);
+  const [defaultGroup, setDefaultGroup] = useState<{ userId: string; id: string; name: string } | null>(null);
+  const needsDefault = !!settings && !settings.groupId && !!user;
+
+  useEffect(() => {
+    if (!needsDefault || !user) return;
+    let cancelled = false;
+    void getDefaultGroup().then((group) => {
+      if (!cancelled) setDefaultGroup(group ? { userId: user.id, id: group.id, name: group.name } : null);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [needsDefault, user]);
+
+  return useMemo(() => {
+    if (!settings || settings.groupId || !user || defaultGroup?.userId !== user.id) return settings;
+    return { ...settings, groupId: defaultGroup.id, groupName: defaultGroup.name };
+  }, [settings, user, defaultGroup]);
+}
+
+function useStoredRoomSettings(obr: ObrState): RoomSettings | null {
   const [settings, setSettings] = useState<RoomSettings | null>(null);
   useEffect(() => {
     if (obr.status === "loading") return;
