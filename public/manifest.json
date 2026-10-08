@@ -5,7 +5,7 @@
   "author": "Coriolis – Der Dritte Horizont",
   "description": "Crew-Dashboard für Coriolis: Charaktere aus der Coriolis-App laden, als Token auf die Karte setzen und synchron halten.",
   "icon": "/logo.svg",
-  "homepage_url": "/",
+  "homepage_url": "https://github.com/manuel-cfw/Coriolis-Dashboard",
   "background_url": "/background.html",
   "action": {
     "title": "Coriolis Dashboard",
