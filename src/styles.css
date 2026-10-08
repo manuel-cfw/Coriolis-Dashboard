@@ -58,7 +58,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* HUD-Popover liegen ohne Papier über der Karte */
+/* HUD-Popover liegen ohne Papier über der Karte. Ein abweichendes
+   color-scheme ließe den Browser den iframe-Hintergrund deckend malen. */
+:root:has(body.hud) {
+  color-scheme: normal;
+}
 body.hud {
   background: transparent;
   overflow: hidden;
@@ -848,4 +852,94 @@ table.data td.mono {
   bottom: 14px;
   z-index: 10;
   max-width: 340px;
+}
+
+/* ─── Schmale Darstellung (Panel neben der Karte, Steuerzentrale) ── */
+.compact .detail-head {
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.compact .detail-head h1 {
+  font-size: 16px;
+}
+.compact .detail-actions {
+  width: 100%;
+  justify-content: flex-start;
+}
+.compact .skill-list {
+  grid-template-columns: 1fr;
+}
+.compact .track {
+  grid-template-columns: 80px 1fr auto;
+}
+.compact table.data th,
+.compact table.data td {
+  padding: 4px;
+}
+
+.hud-detail {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid var(--border-default);
+  border-radius: 4px;
+  background: rgba(7, 10, 16, 0.94);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+.hud-detail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border-default);
+  background: rgba(11, 16, 26, 0.95);
+}
+.hud-detail-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+/* Steuerzentrale im schmalen Aktions-Popover */
+.control {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.control-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-default);
+  background: linear-gradient(180deg, rgba(23, 32, 48, 0.95), rgba(11, 16, 26, 0.95));
+}
+.control-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.control-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--border-subtle);
+}
+.control .roster {
+  grid-template-columns: 1fr;
+}
+.control .infobar.hud-top {
+  flex-wrap: wrap;
+  border-radius: 0;
+  border-width: 0 0 1px;
+  box-shadow: none;
 }

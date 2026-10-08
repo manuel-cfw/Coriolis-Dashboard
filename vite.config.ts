@@ -25,6 +25,7 @@ export default defineConfig(({ mode }) => {
           background: page("./background.html"),
           hudTop: page("./hud-top.html"),
           hudCrew: page("./hud-crew.html"),
+          detail: page("./detail.html"),
         },
       },
     },

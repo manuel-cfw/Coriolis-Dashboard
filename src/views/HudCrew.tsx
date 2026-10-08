@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { CrewCard, buildCrewEntries } from "../components/CrewList";
 import { useAuth, useCrewData, useObr, useOnlinePlayers, useRoomSettings, useSceneTokens } from "../lib/hooks";
 import { POPOVER_CREW, SELECTED_STORAGE_KEY, getSelectedCharacterId, setSelectedCharacterId } from "../lib/settings";
-import { focusToken } from "../lib/tokens";
+import { openCharacterPanel } from "../lib/hud";
 
 const COLLAPSED_KEY = "coriolis-dashboard:hud-crew-collapsed";
 const maxHeight = Number(new URLSearchParams(window.location.search).get("max")) || 700;
@@ -84,9 +84,7 @@ export function HudCrew() {
             onSelect={() => {
               setSelectedId(entry.summary.id);
               setSelectedCharacterId(entry.summary.id);
-              const tokenId = sceneTokens.get(entry.summary.id);
-              if (tokenId && obr.status === "ready") void focusToken(tokenId);
-              if (obr.status === "ready") void OBR.action.open();
+              if (obr.status === "ready") void openCharacterPanel(entry.summary.id);
             }}
           />
         ))}

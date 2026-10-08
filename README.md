@@ -13,14 +13,13 @@ umgesetzt mit den Tokens des Coriolis Design Systems (Void-Schwarz, Gold, Teal, 
 | Bereich | Was es tut |
 |---|---|
 | **Login** | Anmeldung mit dem Konto der Coriolis-App (gleicher Login, JWT). |
+| **Karte bleibt frei** | Alles schwebt über der Owlbear-Karte – nichts verdeckt die Mitte. |
 | **Infoleiste oben** | Gruppe, Schiff (Rumpf/Energie), Dunkelheitspunkte, Sitzung, Ort, Spielzeit, Ikone, Lage. |
-| **Aktive Crew links** | Charaktere, die gerade mitspielen: Portrait, HP/WK, Strahlung, kritische Verletzungen, Token-Status, ob der Spieler im Raum ist. |
-| **Charakteransicht** | Attribute, Fertigkeiten, Waffen, Rüstung, Talente, Verletzungen, Ausrüstung. HP/WK/Strahlung per +/− ändern. |
+| **Aktive Crew links** | Charaktere, die gerade mitspielen: Portrait, HP/WK, Strahlung, kritische Verletzungen, Token-Status. Einklappbar. |
+| **Charakter-Panel** | Klick auf ein Crew-Mitglied öffnet die Details als schmales Panel neben der Crew-Leiste: Attribute, Fertigkeiten, Waffen, Rüstung, Talente, Verletzungen, Ausrüstung. HP/WK/Strahlung per +/− änderbar. |
 | **In Owlbear übertragen** | Setzt den Charakter als Token (Portrait aus der App) in die Bildmitte, mit Name und HP-/WK-Balken. |
-| **Alle Charaktere** | Jeder sieht alle Charaktere der verknüpften Gruppe. |
-| **HUD über der Karte** | Infoleiste und Crew-Leiste schweben dauerhaft über der Karte (pro Spieler ein-/ausblendbar, Position einstellbar). |
+| **Steuerzentrale** | Das Fadenkreuz-Symbol öffnet ein schmales Popover: Login, Crew, alle Charaktere, GM-Einstellungen, HUD an/aus. „Vollbild“ zeigt alles groß. |
 | **Kontextmenü** | Rechtsklick auf einen Charakter-Token → „Coriolis-Charakter öffnen“. |
-| **GM-Einstellungen** | Nur für den Owlbear-GM, siehe unten. |
 
 ### GM-Einstellungen (Owlbear-GM = Spielleiter)
 
@@ -43,6 +42,7 @@ Owlbear Rodeo ──iframe──▶ Coriolis Dashboard (dieses Repo, Node/Expres
                             ├─ /index.html       Aktions-Popover (Dashboard)
                             ├─ /hud-top.html     Infoleiste über der Karte
                             ├─ /hud-crew.html    Crew-Leiste über der Karte
+                            ├─ /detail.html      Charakter-Panel neben der Crew
                             ├─ /background.html  HUD, Kontextmenü, Auto-Sync
                             └─ /api/*  ──Proxy──▶ Coriolis-App (CORIOLIS_API_URL)
 ```

@@ -7,6 +7,7 @@ export const TOKEN_KEY = `${EXT_ID}/token`;
 export const REFRESH_CHANNEL = `${EXT_ID}/refresh`;
 export const POPOVER_TOP = `${EXT_ID}/hud-top`;
 export const POPOVER_CREW = `${EXT_ID}/hud-crew`;
+export const POPOVER_DETAIL = `${EXT_ID}/hud-detail`;
 export const MODAL_ID = `${EXT_ID}/modal`;
 
 export type InfoField =

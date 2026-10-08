@@ -6,6 +6,8 @@ import { Bar, Dots, Panel, Portrait } from "./ui";
 
 interface CharacterDetailProps {
   character: Character;
+  /** Schmale Darstellung für das Panel neben der Karte */
+  compact?: boolean;
   onMap: boolean;
   obrAvailable: boolean;
   canPlace: boolean;
@@ -21,6 +23,7 @@ type TrackKey = "hp_current" | "mp_current" | "radiation";
 
 export function CharacterDetail({
   character,
+  compact = false,
   onMap,
   obrAvailable,
   canPlace,
@@ -67,9 +70,9 @@ export function CharacterDetail({
   const gear = character.gear ?? [];
 
   return (
-    <div className="stack">
+    <div className={`stack ${compact ? "compact" : ""}`}>
       <div className="detail-head">
-        <Portrait character={character} size={84} />
+        <Portrait character={character} size={compact ? 56 : 84} />
         <div className="title">
           <h1>{character.name}</h1>
           <div className="dim">{concept || "Ohne Konzept"}</div>
@@ -179,6 +182,7 @@ export function CharacterDetail({
         {weapons.length === 0 ? (
           <span className="dim">Keine Waffen eingetragen.</span>
         ) : (
+          <div style={{ overflowX: "auto" }}>
           <table className="data">
             <thead>
               <tr>
@@ -206,6 +210,7 @@ export function CharacterDetail({
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </Panel>
 

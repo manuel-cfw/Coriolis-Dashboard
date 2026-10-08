@@ -14,15 +14,12 @@ import {
   getHudPrefs,
   getRoomSettings,
   parseSettings,
-  setSelectedCharacterId,
   type RoomSettings,
 } from "../lib/settings";
+import { CREW_WIDTH, MARGIN, TOP_HEIGHT, openCharacterPanel } from "../lib/hud";
 import { syncSceneWithApp } from "../lib/sync";
 import { tokenMeta } from "../lib/tokens";
 
-const TOP_HEIGHT = 58;
-const CREW_WIDTH = 236;
-const MARGIN = 12;
 
 let settings: RoomSettings | null = null;
 let sceneReady = false;
@@ -122,8 +119,7 @@ async function setupContextMenu() {
     onClick(context) {
       const meta = tokenMeta(context.items[0]);
       if (!meta) return;
-      setSelectedCharacterId(meta.characterId);
-      void OBR.action.open();
+      void openCharacterPanel(meta.characterId);
     },
   });
 }
