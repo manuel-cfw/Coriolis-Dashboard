@@ -56,6 +56,13 @@ dort die Rolle Spielleiter, um Dunkelheitspunkte und fremde Charaktere zu änder
 
 ## Deployment mit Coolify
 
+**Aktuell:** Projekt **CORIOLIS**, Umgebung **dev**, App `coriolis-dashboard-dev` →
+`https://coriolis-dashboard-dev.seemeyer.com`, Branch `main`, gegen Coriolis DEV
+(`CORIOLIS_API_URL=https://coriolis-dev.seemeyer.com`).
+Owlbear-Manifest: `https://coriolis-dashboard-dev.seemeyer.com/manifest.json`
+
+Neu einrichten:
+
 1. Neue Ressource → Application → Dockerfile, Repository `manuel-cfw/Coriolis-Dashboard`.
 2. Port **8080**.
 3. Umgebungsvariable `CORIOLIS_API_URL=https://coriolis.seemeyer.com` (oder die Dev-Instanz).
